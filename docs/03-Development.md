@@ -21,6 +21,61 @@ def createAlarm(alarmTime, alarmPreferences):
 1. What are the input parameters of `generate` method?
 2. What is the output of the `generate` method?
 
+#### Input
+
+- Time: date, time of day, weather
+    - Based on the weather, atmospeheric sounds are added
+    - Based on the date (work, holiday) energy level is slightly modified
+    - Based on the time of the day, build-up time is longer or shorter
+- Energy Level: depressed (sad), chill (normal), pumped up (extatic) 
+
+
+#### Non-user Input
+
+- Key: C-C + chords
+- BPM, 69 < x < 169
+- Build up time, 1 < t < 7 -> wakeup point
+- Structure:
+	- Hype-levels, pre-wakeup point, post-wakeup point, getafuckup point
+	- A, B, C; where each segment has a duration of t (buildup time)
+		- A: build up
+		- B: wake up
+		- C: really wake up
+
+- Order of instrument generation:
+	1. Kick
+	2. Synth
+	3. Sub
+	4. Ride
+	5. Hihat
+	6. Snare
+	7. Tom Low
+	8. Tom High
+	9. Guitar
+	10. Atmospheric sounds
+
+#### How to generate instruments?
+
+1. When this instrument should start?
+
+Output of this function is a random number, which represents beat when the instrument starts. The number must not be bigger than wakeup point. Each instrument has predefined interval which defines prefered starting time.
+
+2. What is the line of the instrument until the end of the song?
+
+- Base: randomly select one prototype for the instrument, where each prototype has length of 8 beats (this is Unit)
+- Based on the "Base" the goal is to have 4 different Units
+	1. First unit is used in A part of the song structure
+	2. Second unit is used in B part of the song structure
+	3. Third unit is used in C part of the song structure
+	4. Fourth unit is used at the end of the C part (noise)
+- Each unit is expanded version of the previous one
+
+3. Add velocity parameter to the each beat.
+
+- Each beat should have velocity of 75 at the beginning of B.
+- Each beat should have velocity of 90 at the beginning of C.
+- Each beat should have velocity of 100 near the end of C.
+
 
 ## Service: Orchestra
 
@@ -31,12 +86,34 @@ Input parameters of orchestra are:
 
 {
     "bpm": number
+    "length": number
     "instruments": {
-        "techno01:kick-small": []
-        "techno01:kick-big": []
+        "kick": InstrumentTrack
     }
 }
 
+InstrumentTrack je lista koja ima N*8 elemenata, gdje je N duzina pjesme. A 1N je "a whole".
+Svaki element je liste je InstrumentBeat.
+
+InstrumentBeat = {
+    velocity: 0-100,
+    pitch: C0-C2,
+    decay: 1/8-8/1
+}
+
+### Instruments
+
+- Kick
+- Snare
+- Tom Low
+- Tom High
+- Ride
+- Hihat
+- Ultra slow reversed crash
+- Sub, 2 octaves where each octave has 8 sounds for each note
+- Synth (doors), 2 octaves where each octave has 8 sounds for each note
+- Guitar chords (no distortion, mid distortion, full dist)
+- Atmospheric sounds (light rain, heavy rain, thunder, snow sound, sun sound, light wind, heavy wind, campfire, birbs, industrial, traffic)
 
 ## Tools & Technologies
 
