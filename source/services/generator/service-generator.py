@@ -5,7 +5,8 @@ class GeneratorService:
 
 	def getRandomNumber(min, max, preferedMin, preferedMax):
 		return
-
+	
+	#random key, minor/major ovisno o energyLevel
 	def getSongKey(energyLevel):
 		return
 
