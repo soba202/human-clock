@@ -1,50 +1,87 @@
 #!/usr/bin/python
 
-class GeneratorService:
-	bpm = 60
+import random
+from datetime import datetime
 
-	def __init__(self, time, energyLevel):
-		return
+now = datetime.now()
+dt_string = now.strftime("%H")
+print(dt_string)
+#datetime test
 
-	def getRandomNumber(min, max):
-		return
-	
-	#random key, minor/major ovisno o energyLevel
-	def getSongKey(energyLevel):
-		return
+class generatorService:
+    def __init__(self, alarmTime, alarmDate, weather, energyLevel):
+        self.alarmTime = alarmTime
+        self.alarmDate = alarmDate
+        self.weather = weather
+        self.energyLevel = energyLevel
 
-	# Vraca broj izmedu 69 i 169
-	def getSongBPM(energyLevel):
-		return
+    @classmethod  #test
+    def from_input(cls):
+        return cls(
+            input("Alarm time: "),
+            input("Alarm date: "),
+            input("Weather: "),
+            input("Energy Level: ")
+        )
 
-	# Where hour is datetime type
-	# Returns a number of beats representing duration of single block
-	def getBlockTime(bpm, timestamp):
-		return
+    def getRandomNumber(min, max):
+        return random.randint(min, max)
 
-'''
-getRandomKey("depressed|chill|pumpedup")
+    def getSongKey(energyLevel):
+        keyMaj = ("CM", "CsM", "DM", "DsM", "EM", "FM", "FsM", "GM", "GsM","AM", "AsM", "BM")
+        keyMin = ("Cm", "Csm", "Dm", "Dsm", "Em", "Fm", "Fsm", "Gm", "Gsm","Am", "Asm", "Bm")
+        allkeys = keyMaj + keyMin
+        if energyLevel == "depressed":
+            return random.choice(keyMin)
+        elif energyLevel == "chill":
+            return random.choice(allkeys)
+        elif energyLevel == "pumped up":
+            return random.choice(keyMaj)
 
-getRandomKey() -> None
-getRandomKey("random") -> None
-getRandomKey("depressed|...") -> {
-	"root": "C->C",
-	"chord": ["D", "E"]
-}
-'''
+    def getSongBPM(energyLevel):
+        if energyLevel == "depressed":
+            return random.randrange(69, 104, 1)
+        elif energyLevel == "chill":
+            return random.randrange(104, 137, 1)
+        elif energyLevel == "pumped up":
+            return random.randrange(137, 170, 1)
+        #values are placeholders
 
-if __name__ == "__main__":
-	time = {
-		"date": "31.01.2020", # DD.MM.YYYY
-		"time": 16, # Time of the day, number between 0 and 24
-		"weather": "sunny" # One of predefined values
-	}
-	generatorService = GeneratorService(time, energyLevel)
+    def getBuildUpTime(alarmTime):
+        if alarmTime <= 5:
+            return random.randrange(6, 8, 1)  #slow build up
+        elif 5 < alarmTime <= 8:
+            return random.randrange(4, 6, 1)
+        elif 8 < alarmTime <= 10:
+            return random.randrange(2, 4, 1)
+        else:
+            return random.randrange(1, 2, 1)  #wake up now
 
-	generatedSong = generatorService.generate()
 
-	# Generated song should look similar to example in serviceOrchestra.py
-	print generatedSong
+    """def dateType(alarmDate):
+        if date is holiday or weekend:
+            do this
+        else:
+            do this"""
 
-	randomNumber = generatorService.getRandomNumber(3, 5)
-	print("randomNumber", randomNumber)
+     #def getBlockTime(bpm, timestamp):
+
+    #def generate(self):
+
+
+
+inputtest = generatorService.from_input()
+
+randomNumber = generatorService.getRandomNumber(69, 421)
+print(randomNumber)
+
+songkey = generatorService.getSongKey("depressed")
+print(songkey)
+
+bpm = generatorService.getSongBPM("depressed")
+print(bpm)
+
+buildup = generatorService.getBuildUpTime(9)
+print(buildup)
+
+
