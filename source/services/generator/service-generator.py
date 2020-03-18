@@ -76,5 +76,3 @@ print(buildup)
 
 date = generatorService.dateType("20 03 2020")
 print(date)
-
-bomd
