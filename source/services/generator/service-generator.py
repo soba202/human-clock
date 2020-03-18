@@ -1,12 +1,7 @@
 #!/usr/bin/python
 
 import random
-from datetime import datetime
-
-now = datetime.now()
-dt_string = now.strftime("%H")
-print(dt_string)
-#datetime test
+import datetime
 
 class generatorService:
     def __init__(self, alarmTime, alarmDate, weather, energyLevel):
@@ -14,15 +9,6 @@ class generatorService:
         self.alarmDate = alarmDate
         self.weather = weather
         self.energyLevel = energyLevel
-
-    @classmethod  #test
-    def from_input(cls):
-        return cls(
-            input("Alarm time: "),
-            input("Alarm date: "),
-            input("Weather: "),
-            input("Energy Level: ")
-        )
 
     def getRandomNumber(min, max):
         return random.randint(min, max)
@@ -45,37 +31,41 @@ class generatorService:
             return random.randrange(104, 137, 1)
         elif energyLevel == "pumped up":
             return random.randrange(137, 170, 1)
-        #values are placeholders
 
     def getBuildUpTime(alarmTime):
         if alarmTime <= 5:
-            return random.randrange(6, 8, 1)  #slow build up
+            return random.randrange(6, 8, 1)  # slow build up
         elif 5 < alarmTime <= 8:
             return random.randrange(4, 6, 1)
         elif 8 < alarmTime <= 10:
             return random.randrange(2, 4, 1)
         else:
-            return random.randrange(1, 2, 1)  #wake up now
+            return random.randrange(1, 2, 1)  # wake up now
 
-
-    """def dateType(alarmDate):
-        if date is holiday or weekend:
-            do this
+    def dateType(alarmDate):
+        day = datetime.datetime.strptime(alarmDate, "%d %m %Y").weekday()
+        if day < 5:
+            return "Weekday"
         else:
-            do this"""
+            return "Weekend"
 
-     #def getBlockTime(bpm, timestamp):
-
-    #def generate(self):
+    #def getWeather(weather): https://code.google.com/archive/p/python-weather-api/ ???
 
 
 
-inputtest = generatorService.from_input()
+
+
+    # def getBlockTime(bpm, timestamp):
+
+    # def generate(self):
+
+
+
 
 randomNumber = generatorService.getRandomNumber(69, 421)
 print(randomNumber)
 
-songkey = generatorService.getSongKey("depressed")
+songkey = generatorService.getSongKey("chill")
 print(songkey)
 
 bpm = generatorService.getSongBPM("depressed")
@@ -84,4 +74,6 @@ print(bpm)
 buildup = generatorService.getBuildUpTime(9)
 print(buildup)
 
+date = generatorService.dateType("20 03 2020")
+print(date)
 
